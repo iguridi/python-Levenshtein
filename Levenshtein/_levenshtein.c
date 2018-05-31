@@ -652,7 +652,6 @@ typedef struct {
 static long int
 levenshtein_common(PyObject *args,
                    const char *name,
-                   size_t xcost,
                    size_t *lensum);
 
 static int
@@ -692,24 +691,33 @@ setseq_common(PyObject *args,
 /* {{{ */
 
 static long int
-levenshtein_common(PyObject *args, const char *name, size_t xcost,
-                   size_t *lensum)
+levenshtein_common(PyObject *args, const char *name, size_t *lensum)
 {
   PyObject *arg1, *arg2;
+  PyLong_Type *arg3 = PyLong_FromSize_t(0);
   size_t len1, len2;
 
-  if (!PyArg_UnpackTuple(args, PYARGCFIX(name), 2, 2, &arg1, &arg2))
+  if (!PyArg_UnpackTuple(args, PYARGCFIX(name), 2, 3, &arg1, &arg2, 
+                          &arg3))
     return -1;
 
   if (PyObject_TypeCheck(arg1, &PyString_Type)
-      && PyObject_TypeCheck(arg2, &PyString_Type)) {
+      && PyObject_TypeCheck(arg2, &PyString_Type)
+      && PyObject_TypeCheck(arg2, &PyLong_Type)) {
     lev_byte *string1, *string2;
+    size_t x_cost;
 
     len1 = PyString_GET_SIZE(arg1);
     len2 = PyString_GET_SIZE(arg2);
     *lensum = len1 + len2;
     string1 = PyString_AS_STRING(arg1);
     string2 = PyString_AS_STRING(arg2);
+    if ((x_cost = PyLong_AsSize_t(arg3)) == (size_t)(-1))
+      return -1;
+    if (d == (size_t)(-1)) {
+        PyErr_NoMemory();
+        return -1;
+      }
     {
       size_t d = lev_edit_distance(len1, string1, len2, string2, xcost);
       if (d == (size_t)(-1)) {
@@ -750,7 +758,7 @@ distance_py(PyObject *self, PyObject *args)
   size_t lensum;
   long int ldist;
 
-  if ((ldist = levenshtein_common(args, "distance", 0, &lensum)) < 0)
+  if ((ldist = levenshtein_common(args, "distance", &lensum)) < 0)
     return NULL;
 
   return PyInt_FromLong((long)ldist);
@@ -762,8 +770,8 @@ ratio_py(PyObject *self, PyObject *args)
   size_t lensum;
   long int ldist;
 
-  
-  if ((ldist = levenshtein_common(args, "ratio", 0, &lensum)) < 0)
+
+  if ((ldist = levenshtein_common(args, "ratio", &lensum)) < 0)
     return NULL;
 
   if (lensum == 0)
