@@ -762,7 +762,8 @@ ratio_py(PyObject *self, PyObject *args)
   size_t lensum;
   long int ldist;
 
-  if ((ldist = levenshtein_common(args, "ratio", 1, &lensum)) < 0)
+  
+  if ((ldist = levenshtein_common(args, "ratio", 0, &lensum)) < 0)
     return NULL;
 
   if (lensum == 0)
