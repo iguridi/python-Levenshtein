@@ -694,7 +694,7 @@ static long int
 levenshtein_common(PyObject *args, const char *name, size_t *lensum)
 {
   PyObject *arg1, *arg2;
-  PyLong_Type *arg3 = PyLong_FromSize_t(0);
+  PyObject *arg3 = PyLong_FromSize_t(0);
   size_t len1, len2;
 
   if (!PyArg_UnpackTuple(args, PYARGCFIX(name), 2, 3, &arg1, &arg2, 
@@ -706,7 +706,7 @@ levenshtein_common(PyObject *args, const char *name, size_t *lensum)
       && PyObject_TypeCheck(arg2, &PyLong_Type)) {
     lev_byte *string1, *string2;
     size_t xcost;
-    
+
     len1 = PyString_GET_SIZE(arg1);
     len2 = PyString_GET_SIZE(arg2);
     *lensum = len1 + len2;
