@@ -169,7 +169,7 @@ taus113_set(taus113_state_t *state,
 /* declarations and docstrings {{{ */
 static PyObject* distance_py(PyObject *self, PyObject *args);
 static PyObject* ratio_py(PyObject *self, PyObject *args);
-static PyObject* closer_py(PyObject *self, PyObject *args);
+static PyObject* nearest_py(PyObject *self, PyObject *args);
 static PyObject* hamming_py(PyObject *self, PyObject *args);
 static PyObject* jaro_py(PyObject *self, PyObject *args);
 static PyObject* jaro_winkler_py(PyObject *self, PyObject *args);
@@ -837,29 +837,6 @@ nearest_py(PyObject *self, PyObject *args)
                    "%s expected one string and a list object", name);
       return -1;
   }
-  // else if (PyObject_TypeCheck(arg1, &PyUnicode_Type)
-  //     && PyObject_TypeCheck(arg2, &PyUnicode_Type)) {
-  //   Py_UNICODE *string1, *string2;
-
-  //   len1 = PyUnicode_GET_SIZE(arg1);
-  //   len2 = PyUnicode_GET_SIZE(arg2);
-  //   *lensum = len1 + len2;
-  //   string1 = PyUnicode_AS_UNICODE(arg1);
-  //   string2 = PyUnicode_AS_UNICODE(arg2);
-  //   {
-  //     size_t d = lev_u_edit_distance(len1, string1, len2, string2, 0);
-  //     if (d == (size_t)(-1)) {
-  //       PyErr_NoMemory();
-  //       return -1;
-  //     }
-  //     return d;
-  //   }
-  // }
-  // else {
-  //   PyErr_Format(PyExc_TypeError,
-  //                "%s expected two Strings or two Unicodes", name);
-  //   return -1;
-  // }
 }
 
 
