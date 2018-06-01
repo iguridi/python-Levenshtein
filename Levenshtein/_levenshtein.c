@@ -797,6 +797,7 @@ nearest_py(PyObject *self, PyObject *args)
 // returns the pair postion in (list, distance) 
 // for the nearest string in list
 {
+  printf("blablabla\n");
   PyObject_Print('la shit000', stdout, 0);
   PyObject *arg1, *list;
   // PyObject *arg3 = PyLong_FromSize_t(0);
