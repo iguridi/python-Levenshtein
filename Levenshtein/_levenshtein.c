@@ -846,7 +846,7 @@ nearest_py(PyObject *self, PyObject *args)
     return PyList_AsTuple(response);
   } else {
       PyErr_Format(PyExc_TypeError,
-                   "%s expected one string and a list object", name);
+                   "%s expected one string and a list object", 'nearest');
       return -1;
   }
 }
