@@ -169,6 +169,7 @@ taus113_set(taus113_state_t *state,
 /* declarations and docstrings {{{ */
 static PyObject* distance_py(PyObject *self, PyObject *args);
 static PyObject* ratio_py(PyObject *self, PyObject *args);
+static PyObject* closer_py(PyObject *self, PyObject *args);
 static PyObject* hamming_py(PyObject *self, PyObject *args);
 static PyObject* jaro_py(PyObject *self, PyObject *args);
 static PyObject* jaro_winkler_py(PyObject *self, PyObject *args);
@@ -179,7 +180,9 @@ static PyObject* setmedian_py(PyObject *self, PyObject *args);
 static PyObject* seqratio_py(PyObject *self, PyObject *args);
 static PyObject* setratio_py(PyObject *self, PyObject *args);
 static PyObject* editops_py(PyObject *self, PyObject *args);
-static PyObject* opcodes_py(PyObject *self, PyObject *args);
+static PyObject* opcodes_p
+
+y(PyObject *self, PyObject *args);
 static PyObject* inverse_py(PyObject *self, PyObject *args);
 static PyObject* apply_edit_py(PyObject *self, PyObject *args);
 static PyObject* matching_blocks_py(PyObject *self, PyObject *args);
@@ -566,6 +569,7 @@ static PyObject* subtract_edit_py(PyObject *self, PyObject *args);
 static PyMethodDef methods[] = {
   METHODS_ITEM(distance),
   METHODS_ITEM(ratio),
+  METHODS_ITEM(nearest),
   METHODS_ITEM(hamming),
   METHODS_ITEM(jaro),
   METHODS_ITEM(jaro_winkler),
@@ -743,7 +747,7 @@ levenshtein_common(PyObject *args, const char *name, size_t *lensum)
   }
   else {
     PyErr_Format(PyExc_TypeError,
-                 "%s expected two Strings or two Unicodes", name);
+                 "%s expected two Strings and a Integer or two Unicodes", name);
     return -1;
   }
 }
@@ -775,6 +779,90 @@ ratio_py(PyObject *self, PyObject *args)
 
   return PyFloat_FromDouble((double)(lensum - ldist)/(lensum));
 }
+
+static PyObject* 
+nearest_py(PyObject *self, PyObject *args)
+// returns the pair postion in (list, distance) 
+// for the nearest string in list
+{
+  PyObject *arg1, *list;
+  // PyObject *arg3 = PyLong_FromSize_t(0);
+  size_t len1, len2;
+  Py_ssize_t len;
+  size_t lensum;
+
+  if (!PyArg_UnpackTuple(args, PYARGCFIX(name), 2, 2, &arg1, &list))
+    return -1;
+
+  if (PyObject_TypeCheck(arg1, &PyString_Type)
+      && PyObject_TypeCheck(list, &PyList_Type)) {
+    lev_byte *string1, *string2;
+    
+    // *lensum = len1 + len2;
+    string1 = PyString_AS_STRING(arg1);
+    // string2 = PyString_AS_STRING(arg2);
+    len = PyList_Size();
+    // len1 = PyString_GET_SIZE(arg1);
+    len1 = strlen(string1);
+    double min = 1000000;
+    Py_ssize_t position = 0;
+
+    for ((Py_ssize_t) i = 0; i < len; ++i) {
+      string2 = PyString_AS_STRING(PyList_GetItem(list, i));
+
+
+      len2 = strlen(string2);
+      lensum = len1 + len2;
+
+      size_t d = lev_edit_distance(len1, string1, len2, string2, 0);
+      if (d == (size_t)(-1)) {
+        PyErr_NoMemory();
+        return -1;
+      }
+
+      double ratio_p = (double)(lensum - d)/(lensum)
+      if (ratio_p < min) {
+        min = ratio_p;
+        position = i;
+      }
+    }
+    PyObject *response = PyList_New((Py_ssize_t) 0 );
+    if (PyList_Append(response, position) == -1)
+        return -1;
+    if (PyList_Append(response, PyFloat_FromDouble(min)) == -1)
+        return -1;
+    return PyList_AsTuple(response);
+  } else {
+      PyErr_Format(PyExc_TypeError,
+                   "%s expected one string and a list object", name);
+      return -1;
+  }
+  // else if (PyObject_TypeCheck(arg1, &PyUnicode_Type)
+  //     && PyObject_TypeCheck(arg2, &PyUnicode_Type)) {
+  //   Py_UNICODE *string1, *string2;
+
+  //   len1 = PyUnicode_GET_SIZE(arg1);
+  //   len2 = PyUnicode_GET_SIZE(arg2);
+  //   *lensum = len1 + len2;
+  //   string1 = PyUnicode_AS_UNICODE(arg1);
+  //   string2 = PyUnicode_AS_UNICODE(arg2);
+  //   {
+  //     size_t d = lev_u_edit_distance(len1, string1, len2, string2, 0);
+  //     if (d == (size_t)(-1)) {
+  //       PyErr_NoMemory();
+  //       return -1;
+  //     }
+  //     return d;
+  //   }
+  // }
+  // else {
+  //   PyErr_Format(PyExc_TypeError,
+  //                "%s expected two Strings or two Unicodes", name);
+  //   return -1;
+  // }
+}
+
+
 
 static PyObject*
 hamming_py(PyObject *self, PyObject *args)
