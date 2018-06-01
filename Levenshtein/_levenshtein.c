@@ -239,6 +239,20 @@ static PyObject* subtract_edit_py(PyObject *self, PyObject *args);
   "\n" \
   "Really?  I thought there was some similarity.\n"
 
+#define nearest_DESC \
+  "returns most similar string by ratio.\n" \
+  "\n" \
+  "ratio(string1, list)\n" \
+  "\n" \
+  "Calculates de ratio between the string and all the words in the list\n" \
+  "\n" \
+  "Examples:\n" \
+  "\n" \
+  ">>> ratio('blabla', ['blablo', 'blo', 'aaa']) \n" \
+  "(0, 1)\n" \
+  "\n" \
+  "returns the position and the distance.\n"
+
 #define hamming_DESC \
   "Compute Hamming distance of two strings.\n" \
   "\n" \
