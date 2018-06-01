@@ -733,7 +733,7 @@ levenshtein_common(PyObject *args, const char *name, size_t *lensum)
     string1 = PyUnicode_AS_UNICODE(arg1);
     string2 = PyUnicode_AS_UNICODE(arg2);
     {
-      size_t d = lev_u_edit_distance(len1, string1, len2, string2, xcost);
+      size_t d = lev_u_edit_distance(len1, string1, len2, string2, 0);
       if (d == (size_t)(-1)) {
         PyErr_NoMemory();
         return -1;
