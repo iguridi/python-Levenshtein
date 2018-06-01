@@ -714,10 +714,6 @@ levenshtein_common(PyObject *args, const char *name, size_t *lensum)
     string2 = PyString_AS_STRING(arg2);
     if ((xcost = PyLong_AsSize_t(arg3)) == (size_t)(-1))
       return -1;
-    if (d == (size_t)(-1)) {
-        PyErr_NoMemory();
-        return -1;
-      }
     {
       size_t d = lev_edit_distance(len1, string1, len2, string2, xcost);
       if (d == (size_t)(-1)) {
