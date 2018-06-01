@@ -809,8 +809,8 @@ nearest_py(PyObject *self, PyObject *args)
     return -1;
   printf("la shit\n");
 
-  if (PyObject_TypeCheck(arg1, &PyString_Type)
-      && PyList_Check(list)) {
+  if (PyObject_TypeCheck(arg1, &PyString_Type)) {
+    // && PyList_Check(list)
     printf("la shit2\n");
     lev_byte *string1, *string2;
     // *lensum = len1 + len2;
