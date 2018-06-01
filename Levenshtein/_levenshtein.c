@@ -803,7 +803,7 @@ nearest_py(PyObject *self, PyObject *args)
   Py_ssize_t len;
   size_t lensum;
 
-  if (!PyArg_UnpackTuple(args, PYARGCFIX(name), 2, 2, &arg1, &list))
+  if (!PyArg_UnpackTuple(args, PYARGCFIX("nearest"), 2, 2, &arg1, &list))
     return -1;
 
   if (PyObject_TypeCheck(arg1, &PyString_Type)
