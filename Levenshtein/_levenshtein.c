@@ -180,9 +180,7 @@ static PyObject* setmedian_py(PyObject *self, PyObject *args);
 static PyObject* seqratio_py(PyObject *self, PyObject *args);
 static PyObject* setratio_py(PyObject *self, PyObject *args);
 static PyObject* editops_py(PyObject *self, PyObject *args);
-static PyObject* opcodes_p
-
-y(PyObject *self, PyObject *args);
+static PyObject* opcodes_py(PyObject *self, PyObject *args);
 static PyObject* inverse_py(PyObject *self, PyObject *args);
 static PyObject* apply_edit_py(PyObject *self, PyObject *args);
 static PyObject* matching_blocks_py(PyObject *self, PyObject *args);
