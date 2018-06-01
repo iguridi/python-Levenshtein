@@ -798,21 +798,21 @@ nearest_py(PyObject *self, PyObject *args)
 // for the nearest string in list
 {
   printf("blablabla\n");
-  PyObject_Print('la shit000', stdout, 0);
   PyObject *arg1, *list;
   // PyObject *arg3 = PyLong_FromSize_t(0);
   size_t len1, len2;
+  printf('la shit000\n');
   Py_ssize_t len;
   size_t lensum;
 
-  PyObject_Print('la shit', stdout, 0);
   if (!PyArg_UnpackTuple(args, PYARGCFIX("nearest"), 2, 2, &arg1, &list))
     return -1;
+  printf('la shit\n');
 
   if (PyObject_TypeCheck(arg1, &PyString_Type)
       && PyObject_TypeCheck(list, &PyList_Type)) {
     lev_byte *string1, *string2;
-    PyObject_Print('la shit2', stdout, 0);
+    printf('la shit2\n');
     // *lensum = len1 + len2;
     string1 = PyString_AS_STRING(arg1);
     // string2 = PyString_AS_STRING(arg2);
@@ -821,7 +821,7 @@ nearest_py(PyObject *self, PyObject *args)
     // len1 = strlen(string1);
     double min = 1000000;
     Py_ssize_t position = 0;
-    PyObject_Print('la shit3', stdout, 0);
+    printf('la shit3\n');
 
     for (Py_ssize_t i = 0; i < len; ++i) {
       PyObject *s2 = PyList_GetItem(list, i);
@@ -842,7 +842,7 @@ nearest_py(PyObject *self, PyObject *args)
         position = i;
       }
     }
-    PyObject_Print('la shit4', stdout, 0);
+    printf('la shit4\n');
     PyObject *response = PyList_New((Py_ssize_t) 0 );
     if (PyList_Append(response, position) == -1)
         return -1;
