@@ -814,16 +814,16 @@ nearest_py(PyObject *self, PyObject *args)
     string1 = PyString_AS_STRING(arg1);
     // string2 = PyString_AS_STRING(arg2);
     len = PyList_Size(list);
-    // len1 = PyString_GET_SIZE(arg1);
-    len1 = strlen(string1);
+    len1 = PyString_GET_SIZE(arg1);
+    // len1 = strlen(string1);
     double min = 1000000;
     Py_ssize_t position = 0;
 
     for (Py_ssize_t i = 0; i < len; ++i) {
-      string2 = PyString_AS_STRING(PyList_GetItem(list, i));
-
-
-      len2 = strlen(string2);
+      PyObject *s2 = PyList_GetItem(list, i);
+      string2 = PyString_AS_STRING(s2);
+      // len2 = strlen(string2);
+      len2 = PyString_GET_SIZE(s2);
       lensum = len1 + len2;
 
       size_t d = lev_edit_distance(len1, string1, len2, string2, 0);
@@ -832,7 +832,7 @@ nearest_py(PyObject *self, PyObject *args)
         return -1;
       }
 
-      double ratio_p = (double)(lensum - d)/(lensum)
+      double ratio_p = (double)(lensum - d)/(lensum);
       if (ratio_p < min) {
         min = ratio_p;
         position = i;
