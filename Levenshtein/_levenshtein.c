@@ -813,7 +813,7 @@ nearest_py(PyObject *self, PyObject *args)
     // *lensum = len1 + len2;
     string1 = PyString_AS_STRING(arg1);
     // string2 = PyString_AS_STRING(arg2);
-    len = PyList_Size();
+    len = PyList_Size(list);
     // len1 = PyString_GET_SIZE(arg1);
     len1 = strlen(string1);
     double min = 1000000;
