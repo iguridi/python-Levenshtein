@@ -819,7 +819,7 @@ nearest_py(PyObject *self, PyObject *args)
     double min = 1000000;
     Py_ssize_t position = 0;
 
-    for ((Py_ssize_t) i = 0; i < len; ++i) {
+    for (Py_ssize_t i = 0; i < len; ++i) {
       string2 = PyString_AS_STRING(PyList_GetItem(list, i));
 
 
